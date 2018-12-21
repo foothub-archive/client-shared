@@ -1,7 +1,8 @@
-import { authApi } from '../../../../services';
+import { authApi } from '../../../../services'
 
 import {
   _IS_AUTHED_G as IS_AUTHED_G,
+  _IS_LOADING_G as IS_LOADING_G,
   _TOKEN_G as TOKEN_G,
   _REQUEST_M as REQUEST_M,
   _SUCCESS_M as SUCCESS_M,
@@ -12,87 +13,88 @@ import {
   _REFRESH_A as REFRESH_A,
   _VERIFY_A as VERIFY_A,
   _LOGOUT_A as LOGOUT_A,
-} from '../constants/auth';
+} from '../constants/auth'
 
 const state = {
   client: authApi,
   url: 'jwt',
   token: undefined,
   status: '', // '', loading, success, error
-};
+}
 
 const getters = {
   [IS_AUTHED_G]: state => !!state.token,
   [TOKEN_G]: state => state.token,
-};
+  [IS_LOADING_G]: state => state.status === 'loading',
+}
 
 /* eslint-disable no-param-reassign */
 const mutations = {
   [REQUEST_M]: (state) => {
-    state.status = 'loading';
+    state.status = 'loading'
   },
   [SUCCESS_M]: (state) => {
-    state.status = 'success';
+    state.status = 'success'
   },
   [ERROR_M]: (state) => {
-    state.status = 'error';
+    state.status = 'error'
   },
   [TOKEN_M]: (state, token) => {
-    state.token = token;
+    state.token = token
   },
   [CLEAR_TOKEN_M]: (state) => {
-    state.token = undefined;
+    state.token = undefined
   },
-};
+}
 
 const actions = {
   [LOGIN_A]: ({ commit }, userCredentials) => new Promise((resolve, reject) => {
-    commit(REQUEST_M);
+    commit(REQUEST_M)
     authApi.post('jwt/token-obtain', userCredentials).then((resp) => {
-      commit(SUCCESS_M);
-      commit(TOKEN_M, resp.data.token);
-      resolve(resp);
+      commit(SUCCESS_M)
+      commit(TOKEN_M, resp.data.token)
+      resolve(resp)
     }).catch((err) => {
-      commit(ERROR_M);
-      commit(CLEAR_TOKEN_M);
-      reject(err);
-    });
+      commit(ERROR_M)
+      commit(CLEAR_TOKEN_M)
+      reject(err)
+    })
   }),
   [REFRESH_A]: ({ commit, state }) => new Promise((resolve, reject) => {
-    commit(REQUEST_M);
+    commit(REQUEST_M)
     authApi.post('jwt/token-refresh', {
       token: state.token,
     }).then((resp) => {
-      commit(SUCCESS_M);
-      commit(TOKEN_M, resp.data.token);
-      resolve(resp);
+      commit(SUCCESS_M)
+      commit(TOKEN_M, resp.data.token)
+      resolve(resp)
     }).catch((err) => {
-      commit(ERROR_M);
-      commit(CLEAR_TOKEN_M);
-      reject(err);
-    });
+      commit(ERROR_M)
+      commit(CLEAR_TOKEN_M)
+      reject(err)
+    })
   }),
   [VERIFY_A]: ({ commit, state }) => new Promise((resolve, reject) => {
-    commit(REQUEST_M);
+    commit(REQUEST_M)
     authApi.post('jwt/token-verify', {
       token: state.token,
     }).then((resp) => {
-      commit(SUCCESS_M);
-      commit(TOKEN_M, resp.data.token);
-      resolve(resp);
+      commit(SUCCESS_M)
+      commit(TOKEN_M, resp.data.token)
+      resolve(resp)
     }).catch((err) => {
-      commit(ERROR_M);
-      commit(CLEAR_TOKEN_M);
-      reject(err);
-    });
+      commit(ERROR_M)
+      commit(CLEAR_TOKEN_M)
+      reject(err)
+    })
   }),
   [LOGOUT_A]: ({ commit }) => new Promise((resolve) => {
-    commit(CLEAR_TOKEN_M);
-    resolve();
+    commit(CLEAR_TOKEN_M)
+    resolve()
   }),
-};
+}
 
-const namespaced = true;
+const namespaced = true
 
 export default {
   state,
@@ -100,4 +102,4 @@ export default {
   actions,
   mutations,
   namespaced,
-};
+}

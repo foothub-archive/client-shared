@@ -1,4 +1,4 @@
-import { authApi } from '../../../../services';
+import { authApi } from '../../../../services'
 
 import {
   _LOADED_G as LOADED_G,
@@ -9,68 +9,68 @@ import {
   _CLEAR_USER_M as CLEAR_USER_M,
   _POST_A as POST_A,
   _GET_A as GET_A,
-} from '../constants/user';
+} from '../constants/user'
 
 const state = {
   client: authApi,
   url: 'users',
   status: '', // '', loading, success, error
   user: {}, // user data
-};
+}
 
 const getters = {
   // true after successful response
   [LOADED_G]: state => Object.keys(state.user).length > 0,
 
-};
+}
 
 /* eslint-disable no-param-reassign */
 const mutations = {
   [REQUEST_M]: (state) => {
-    state.status = 'loading';
+    state.status = 'loading'
   },
   [SUCCESS_M]: (state) => {
-    state.status = 'success';
+    state.status = 'success'
   },
   [ERROR_M]: (state) => {
-    state.status = 'error';
+    state.status = 'error'
   },
   [USER_M]: (state, user) => {
-    state.user = user;
+    state.user = user
   },
   [CLEAR_USER_M]: (state) => {
-    state.user = {};
+    state.user = {}
   },
-};
+}
 
 const actions = {
   [POST_A]: ({ commit }, data) => new Promise((resolve, reject) => {
-    commit(REQUEST_M);
+    commit(REQUEST_M)
     authApi.post('users', data)
       .then((resp) => {
-        commit(SUCCESS_M, '');
-        resolve(resp);
+        commit(SUCCESS_M, '')
+        resolve(resp)
       }).catch((err) => {
-        commit(ERROR_M);
-        reject(err);
-      });
+        commit(ERROR_M)
+        reject(err)
+      })
   }),
   [GET_A]: ({ state, commit }) => new Promise((resolve, reject) => {
-    commit(REQUEST_M);
+    commit(REQUEST_M)
     state.client.get(`${state.url}/me`)
       .then((resp) => {
-        commit(SUCCESS_M);
-        commit(USER_M, resp.data);
-        resolve(resp);
+        commit(SUCCESS_M)
+        commit(USER_M, resp.data)
+        resolve(resp)
       }).catch((err) => {
-        commit(ERROR_M);
-        commit(CLEAR_USER_M);
-        reject(err);
-      });
+        commit(ERROR_M)
+        commit(CLEAR_USER_M)
+        reject(err)
+      })
   }),
-};
+}
 
-const namespaced = true;
+const namespaced = true
 
 export default {
   state,
@@ -78,4 +78,4 @@ export default {
   actions,
   mutations,
   namespaced,
-};
+}

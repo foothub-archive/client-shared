@@ -1,21 +1,21 @@
-import { coreApi } from '../../../../services';
+import { coreApi } from '../../../../services'
 import PAGINATED from '../constants/paginated'
 import paginated from './paginated'
 
 const state = {
   client: coreApi,
   url: 'friend_profiles',
-};
+}
 
-const perPage = 6;
+const perPage = 6
 
-const getters = {};
+const getters = {}
 
-const mutations = {};
+const mutations = {}
 
-const actions = {};
+const actions = {}
 
-const namespaced = true;
+const namespaced = true
 
 export default {
   state,
@@ -25,5 +25,5 @@ export default {
   namespaced,
   modules: {
     [PAGINATED]: paginated(state.client, state.url, perPage),
-  }
-};
+  },
+}

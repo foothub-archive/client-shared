@@ -1,13 +1,13 @@
-import Vuex from 'vuex';
-import AUTH from './constants/auth';
-import auth from './modules/auth';
-import USER from './constants/user';
-import user from './modules/user';
-import ME from './constants/me';
-import me from './modules/me';
-import FRIENDS from './constants/friends';
-import friends from './modules/friends';
-import FRIEND_INVITED from './constants/friend-invited';
+import Vuex from 'vuex'
+import AUTH from './constants/auth'
+import auth from './modules/auth'
+import USER from './constants/user'
+import user from './modules/user'
+import ME from './constants/me'
+import me from './modules/me'
+import FRIENDS from './constants/friends'
+import friends from './modules/friends'
+import FRIEND_INVITED from './constants/friend-invited'
 import friendInvited from './modules/friend-invited'
 import FRIEND_INVITING from './constants/friend-inviting'
 import friendInviting from './modules/friend-inviting'
@@ -25,6 +25,6 @@ const store = new Vuex.Store({
     [FRIEND_PROFILES]: friendProfiles,
   },
   strict: process.env.NODE_ENV !== 'production',
-});
+})
 
-export default store;
+export default store

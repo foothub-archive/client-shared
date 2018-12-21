@@ -26,7 +26,7 @@ import {
   _CURRENT_M as CURRENT_M,
   _SEARCH_M as SEARCH_M,
   _LIST_A as LIST_A,
-} from '../constants/paginated';
+} from '../constants/paginated'
 
 // state is the output of a function so it can be reused
 const buildState = (client, url, perPage) => ({
@@ -41,7 +41,7 @@ const buildState = (client, url, perPage) => ({
   current: 1, // current page number
   count: 0, // total item count
   perPage: perPage || 14, // number of items per page (default is 14)
-});
+})
 
 const getters = {
   // true when waiting for a response
@@ -59,60 +59,60 @@ const getters = {
       getters[PER_PAGE_QPARAMS_G],
       getters[PAGE_QPARAMS_G],
       getters[SEARCH_QPARAMS_G],
-    ];
-    return qps.reduce((accumulator, value) => Object.assign({}, accumulator, value));
+    ]
+    return qps.reduce((accumulator, value) => Object.assign({}, accumulator, value))
   },
-};
+}
 
 /* eslint-disable no-param-reassign */
 export const mutations = {
   // before requesting
   [REQUEST_M]: (state) => {
-    state.status = 'loading';
+    state.status = 'loading'
   },
   // on a success request
   [SUCCESS_M]: (state, data) => {
-    state.status = 'success';
-    state.results = data.results;
-    state.currentPage = data.current;
-    state.itemCount = data.count;
+    state.status = 'success'
+    state.results = data.results
+    state.currentPage = data.current
+    state.itemCount = data.count
   },
   // on a failed request
   [ERROR_M]: (state) => {
-    state.status = 'error';
+    state.status = 'error'
   },
   // for mutating the per page item count
   [PER_PAGE_M]: (state, perPage) => {
-    state.perPage = perPage;
+    state.perPage = perPage
   },
   // for mutating the current page
   [CURRENT_M]: (state, current) => {
-    state.current = current;
+    state.current = current
   },
   // for mutating the search pattern
   [SEARCH_M]: (state, search) => {
-    state.search = search;
+    state.search = search
   },
-};
+}
 /* eslint-enable no-param-reassign */
 
 const actions = {
   // fetches items, mutates state
   [LIST_A]: ({ state, getters, commit }) => new Promise((resolve, reject) => {
-    commit(REQUEST_M);
+    commit(REQUEST_M)
     state.client.get(state.url, { params: getters[QPARAMS_G] })
       .then((resp) => {
-        commit(SUCCESS_M, resp.data);
-        resolve(resp);
+        commit(SUCCESS_M, resp.data)
+        resolve(resp)
       })
       .catch((err) => {
-        commit(ERROR_M);
-        reject(err);
-      });
+        commit(ERROR_M)
+        reject(err)
+      })
   }),
-};
+}
 
-const namespaced = true;
+const namespaced = true
 
 const paginated = (client, url, perPage) => ({
   state : buildState(client, url, perPage),
@@ -120,6 +120,6 @@ const paginated = (client, url, perPage) => ({
   mutations,
   actions,
   namespaced,
-});
+})
 
 export default paginated
